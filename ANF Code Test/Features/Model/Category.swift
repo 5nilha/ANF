@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Category: Decodable {
+struct CategoryExplorer: Codable {
     let title: String
     let backgroundImage: String
     private (set) var content: [Content]?
