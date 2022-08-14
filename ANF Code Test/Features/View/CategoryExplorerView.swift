@@ -23,7 +23,7 @@ enum Dimensions: CGFloat {
     }
 }
 
-class CategoryExplorerView: UIView {
+@IBDesignable class CategoryExplorerView: UIView {
     
     var vStack: UIStackView = {
         let stack = UIStackView()
@@ -66,6 +66,7 @@ class CategoryExplorerView: UIView {
     
     fileprivate var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -97,19 +98,19 @@ class CategoryExplorerView: UIView {
         return label
     }()
     
-    var image: UIImage? {
+    @IBInspectable var image: UIImage? {
         didSet {
             backgroundImageView.image = image
         }
     }
     
-    var title: String? {
+    @IBInspectable var title: String? {
         didSet {
             titleLabel.text = title
         }
     }
     
-    var topDescription: String? {
+    @IBInspectable var topDescription: String? {
         didSet {
             if let description = topDescription {
                 topDescriptionLabel.text = description
@@ -120,7 +121,8 @@ class CategoryExplorerView: UIView {
         }
     }
     
-    var bottomDescription: String? {
+
+    @IBInspectable var bottomDescription: String? {
         didSet {
             if let description = bottomDescription {
                 bottomDescriptionLabel.text = description
@@ -131,7 +133,7 @@ class CategoryExplorerView: UIView {
         }
     }
     
-    var promoMessage: String? {
+    @IBInspectable var promoMessage: String? {
         didSet {
             if let message = promoMessage {
                 promoMessageLabel.text = message
