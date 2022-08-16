@@ -35,5 +35,10 @@ struct CategoryExplorerViewModel {
     var bottomDescription: String? {
         return categoryExplorer.bottomDescription
     }
+    
+    var content: [(title: String, urlString: String)] {
+        guard let content = categoryExplorer.content else { return [] }
+        return content.map { ($0.title, $0.target) }
+    }
 }
 
