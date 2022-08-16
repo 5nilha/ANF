@@ -17,5 +17,6 @@ class ExploreCardCell: UITableViewCell {
         categoryView?.topDescription = categoryExplorerVM.topDescription
         categoryView?.bottomDescription = categoryExplorerVM.bottomDescription
         categoryView?.promoMessage = categoryExplorerVM.promoMessage
+        categoryView?.items = categoryExplorerVM.content
     }
 }
