@@ -139,6 +139,7 @@ enum Dimensions: CGFloat {
     
     @IBInspectable var imageUrl: String? {
         didSet {
+            print(imageUrl)
             guard let url = imageUrl else { return }
             let img = UIImage(named: url)
             if img != nil {

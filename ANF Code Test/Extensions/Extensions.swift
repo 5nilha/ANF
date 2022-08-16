@@ -144,17 +144,36 @@ extension UICollectionView {
 
 
 extension UIImageView {
+    
+    
     func loadFrom(URLAddress: String) {
-        guard let url = URL(string: URLAddress) else {
+        if let image = UIImage.loadFromCache(string: URLAddress) {
+            self.image = image
             return
         }
-        
-        DispatchQueue.main.async { [weak self] in
-            if let imageData = try? Data(contentsOf: url) {
-                if let loadedImage = UIImage(data: imageData) {
-                        self?.image = loadedImage
+
+        if let url = URL(string: URLAddress),
+           let imageData = try? Data(contentsOf: url) {
+            if let loadedImage = UIImage(data: imageData) {
+                DispatchQueue.main.async { [weak self] in
+                    self?.image = loadedImage
+                    self?.image?.saveOnCache(url: url)
                 }
             }
+                
         }
+    }
+}
+
+extension UIImage {
+    static let cache = ImageCache()
+    
+    static func loadFromCache(string url: String) -> UIImage? {
+        guard let imageUrl = URL(string: url) else { return nil}
+        return UIImage.cache.image(for: imageUrl)
+    }
+    
+    func saveOnCache(url: URL) {
+        return UIImage.cache.insertImage(self, for: url)
     }
 }

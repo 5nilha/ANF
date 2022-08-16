@@ -36,6 +36,8 @@
 		3E53EEEB28AB674900FAA76F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E53EEEA28AB674900FAA76F /* Logger.swift */; };
 		3E53EEEE28AB67F800FAA76F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E53EEED28AB67F800FAA76F /* Constants.swift */; };
 		3E53EEF128AB6B5600FAA76F /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E53EEF028AB6B5600FAA76F /* Identifiable.swift */; };
+		3E53EEF328AC2A7200FAA76F /* ImageCacheType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E53EEF228AC2A7200FAA76F /* ImageCacheType.swift */; };
+		3E53EEF628AC2AA300FAA76F /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E53EEF528AC2AA300FAA76F /* ImageCache.swift */; };
 		3E727ED326727088006C11AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E727ED226727088006C11AC /* AppDelegate.swift */; };
 		3E727ED526727088006C11AC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E727ED426727088006C11AC /* SceneDelegate.swift */; };
 		3E727EDA26727088006C11AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E727ED826727088006C11AC /* Main.storyboard */; };
@@ -85,6 +87,8 @@
 		3E53EEEA28AB674900FAA76F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		3E53EEED28AB67F800FAA76F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		3E53EEF028AB6B5600FAA76F /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
+		3E53EEF228AC2A7200FAA76F /* ImageCacheType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheType.swift; sourceTree = "<group>"; };
+		3E53EEF528AC2AA300FAA76F /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		3E727ECF26727088006C11AC /* ANF Code Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ANF Code Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E727ED226727088006C11AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E727ED426727088006C11AC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 		3E53EEB228A8061700FAA76F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				3E53EEF428AC2A9500FAA76F /* Cache */,
 				3E53EEEF28AB6B4600FAA76F /* Protocols */,
 				3E53EEE928AB673B00FAA76F /* Logs */,
 				3E727ED226727088006C11AC /* AppDelegate.swift */,
@@ -328,8 +333,17 @@
 			isa = PBXGroup;
 			children = (
 				3E53EEF028AB6B5600FAA76F /* Identifiable.swift */,
+				3E53EEF228AC2A7200FAA76F /* ImageCacheType.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		3E53EEF428AC2A9500FAA76F /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				3E53EEF528AC2AA300FAA76F /* ImageCache.swift */,
+			);
+			path = Cache;
 			sourceTree = "<group>";
 		};
 		3E727EC626727088006C11AC = {
@@ -486,6 +500,7 @@
 				3E53EEAB28A8054800FAA76F /* RequestError.swift in Sources */,
 				3E53EEE628AB66E300FAA76F /* Extensions.swift in Sources */,
 				3E53EEE828AB671100FAA76F /* HttpCode.swift in Sources */,
+				3E53EEF328AC2A7200FAA76F /* ImageCacheType.swift in Sources */,
 				3E727F03267281F7006C11AC /* ANFExploreCardTableViewController.swift in Sources */,
 				3E53EEC528A95D9F00FAA76F /* CategoryExplorerHelper.swift in Sources */,
 				3E727ED326727088006C11AC /* AppDelegate.swift in Sources */,
@@ -500,6 +515,7 @@
 				3E53EED628A99F6E00FAA76F /* CategoryExplorerView.swift in Sources */,
 				3E53EEE128AB635A00FAA76F /* HttpMethod.swift in Sources */,
 				3E53EEEB28AB674900FAA76F /* Logger.swift in Sources */,
+				3E53EEF628AC2AA300FAA76F /* ImageCache.swift in Sources */,
 				3E53EE9628A7728300FAA76F /* Content.swift in Sources */,
 				3E53EEBA28A9549F00FAA76F /* ParserManager.swift in Sources */,
 				3E53EEF128AB6B5600FAA76F /* Identifiable.swift in Sources */,
