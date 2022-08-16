@@ -11,5 +11,9 @@ enum RequestError: Error {
     case fileNotFound
     case decodeError(Error)
     case fileDataConversionError(Error)
+    case urlRequestCouldNotBeCreated
+    case responseDataIsNil
+    case httpCodeNotSuccessful
+    case server(Error)
     case unknown(Error?)
 }

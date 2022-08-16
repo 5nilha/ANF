@@ -59,21 +59,19 @@ enum Dimensions: CGFloat {
     }
     
     private func commonInit(){
-        let hStack = UIStackView()
-        hStack.axis = .horizontal
-        hStack.distribution = .fill
-        hStack.alignment = .top
-        
+        for sview in vStack.arrangedSubviews {
+            vStack.removeArrangedSubview(sview)
+        }
         
         vStack.addArrangedSubview(backgroundImageView)
         vStack.addArrangedSubview(topDescriptionLabel)
         vStack.addArrangedSubview(titleLabel)
         vStack.addArrangedSubview(promoMessageLabel)
         vStack.addArrangedSubview(bottomDescriptionLabel)
-        vStack.addArrangedSubview(contentStack)
         
-
-        self.addSubview(vStack)
+        if !self.subviews.contains(vStack) {
+            self.addSubview(vStack)
+        }
         
         NSLayoutConstraint.activate([
             topDescriptionLabel.heightAnchor.constraint(equalToConstant: 20),
@@ -139,6 +137,18 @@ enum Dimensions: CGFloat {
         }
     }
     
+    @IBInspectable var imageUrl: String? {
+        didSet {
+            guard let url = imageUrl else { return }
+            let img = UIImage(named: url)
+            if img != nil {
+                backgroundImageView.image = image
+            } else {
+                backgroundImageView.loadFrom(URLAddress: url)
+            }
+        }
+    }
+    
     @IBInspectable var title: String? {
         didSet {
             titleLabel.text = title
@@ -198,12 +208,12 @@ enum Dimensions: CGFloat {
     
     var items: [(title: String, urlString: String)]? {
         didSet {
-            guard let contentItems = items else { return }
-            
             for cview in contentStack.arrangedSubviews {
                 contentStack.removeArrangedSubview(cview)
             }
-            
+            vStack.removeArrangedSubview(contentStack)
+            guard let contentItems = items else { return }
+            vStack.addArrangedSubview(contentStack)
             for item in contentItems {
                 let contentButton = ContentButton()
                 contentButton.setTitle(item.title, for: .normal)
@@ -211,5 +221,9 @@ enum Dimensions: CGFloat {
                 contentStack.addArrangedSubview(contentButton)
             }
         }
+    }
+    
+    func resetView() {
+        items = nil
     }
 }
