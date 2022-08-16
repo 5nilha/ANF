@@ -15,9 +15,8 @@ struct CategoryExplorerViewModel {
         self.categoryExplorer = categoryExplorer
     }
     
-    var backgroundImage: UIImage? {
-        let name = categoryExplorer.backgroundImage
-        return UIImage(named: name)
+    var backgroundImageUrl: String {
+        return categoryExplorer.backgroundImage
     }
     
     var title: String {

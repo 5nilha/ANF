@@ -12,8 +12,7 @@ class ANFExploreCardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        categoryExplorerHelper.delegate = self
-        categoryExplorerHelper.fetchCategories()
+        categoryExplorerHelper.fetchCategoriesFromNetwork(delegate: self)
         // Set automatic dimensions for row height
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = UITableView.automaticDimension
@@ -46,6 +45,4 @@ extension ANFExploreCardTableViewController: CategoryExplorerDelegate {
     func didFail(error: RequestError) {
         
     }
-    
-    
 }

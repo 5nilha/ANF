@@ -8,12 +8,18 @@
 import UIKit
 
 class ExploreCardCell: UITableViewCell {
+    
     static let identifier = "exploreContentCell"
     @IBOutlet weak var categoryView: CategoryExplorerView?
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        categoryView?.resetView()
+    }
+    
     func setupView(categoryExplorerVM: CategoryExplorerViewModel) {
         categoryView?.title = categoryExplorerVM.title
-        categoryView?.image = categoryExplorerVM.backgroundImage
+        categoryView?.imageUrl = categoryExplorerVM.backgroundImageUrl
         categoryView?.topDescription = categoryExplorerVM.topDescription
         categoryView?.bottomDescription = categoryExplorerVM.bottomDescription
         categoryView?.promoMessage = categoryExplorerVM.promoMessage
