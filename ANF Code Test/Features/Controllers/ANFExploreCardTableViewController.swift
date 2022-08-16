@@ -7,46 +7,45 @@ import UIKit
 
 class ANFExploreCardTableViewController: UITableViewController {
 
-//    private var exploreData: [Category]? {
-//        if let filePath = Bundle.main.path(forResource: "exploreData", ofType: "json"),
-//         let fileContent = try? Data(contentsOf: URL(fileURLWithPath: filePath)),
-//           let categories = try? JSONDecoder().decode([Category].self, from: fileContent) {
-//            return categories
-//        }
-//        return nil
-//    }
-    var exploreData: [CategoryExplorer]?
+    var exploreData: [CategoryExplorerViewModel]?
+    let categoryExplorerHelper = CategoryExplorerHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        RequestManager.fileRequest([CategoryExplorer].self, fileName: "exploreData", ofType: "json") { [weak self] result in
-            switch result {
-            case .success(let categories):
-                self?.exploreData = categories
-            case .failure(let error):
-                print(error)
-            }
-        }
+        categoryExplorerHelper.delegate = self
+        categoryExplorerHelper.fetchCategories()
+        // Set automatic dimensions for row height
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
     }
-    
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         exploreData?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "exploreContentCell", for: indexPath)
-        if let titleLabel = cell.viewWithTag(1) as? UILabel,
-           let titleText = exploreData?[indexPath.row].title {
-            titleLabel.text = titleText
+        guard let category = exploreData?[indexPath.row],
+              let cell = self.tableView.dequeueReusableCell(withIdentifier: ExploreCardCell.identifier, for: indexPath) as? ExploreCardCell else {
+            return UITableViewCell()
         }
-        
-        if let imageView = cell.viewWithTag(2) as? UIImageView,
-           let name = exploreData?[indexPath.row].backgroundImage as? String,
-           let image = UIImage(named: name) {
-            imageView.image = image
-        }
-        
+        cell.setupView(categoryExplorerVM: category)
         return cell
     }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+
+extension ANFExploreCardTableViewController: CategoryExplorerDelegate {
+    func didLoad(categories: [CategoryExplorerViewModel]) {
+        self.exploreData = categories
+        self.tableView.reloadData()
+    }
+    
+    func didFail(error: RequestError) {
+        
+    }
+    
+    
 }
