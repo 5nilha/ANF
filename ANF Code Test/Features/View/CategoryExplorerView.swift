@@ -25,11 +25,21 @@ enum Dimensions: CGFloat {
 
 @IBDesignable class CategoryExplorerView: UIView {
     
-    var vStack: UIStackView = {
+    private var contentStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .fill
-        stack.alignment = .center
+        stack.alignment = .fill
+        stack.spacing = 6
+        return stack
+    }()
+    
+    private var vStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.distribution = .fill
+        stack.alignment = .fill
+        stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -49,51 +59,76 @@ enum Dimensions: CGFloat {
     }
     
     private func commonInit(){
+        let hStack = UIStackView()
+        hStack.axis = .horizontal
+        hStack.distribution = .fill
+        hStack.alignment = .top
+        
+        
         vStack.addArrangedSubview(backgroundImageView)
         vStack.addArrangedSubview(topDescriptionLabel)
         vStack.addArrangedSubview(titleLabel)
         vStack.addArrangedSubview(promoMessageLabel)
         vStack.addArrangedSubview(bottomDescriptionLabel)
+        vStack.addArrangedSubview(contentStack)
         
+
         self.addSubview(vStack)
         
         NSLayoutConstraint.activate([
+            topDescriptionLabel.heightAnchor.constraint(equalToConstant: 20),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
+            promoMessageLabel.heightAnchor.constraint(equalToConstant: 20),
+            bottomDescriptionLabel.heightAnchor.constraint(equalToConstant: 20),
+            
             vStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             vStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-            vStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+            vStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            vStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)
         ])
     }
     
     fileprivate var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+//        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleToFill
+        imageView.sizeToFit()
+        imageView.backgroundColor = .yellow
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     fileprivate lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.font = Dimensions.mainTitle.font
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     fileprivate var topDescriptionLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.font = Dimensions.description.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     fileprivate var bottomDescriptionLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.font = Dimensions.description.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     fileprivate var promoMessageLabel: UILabel = {
-        let label = UILabel()
+        let label = UILabel(frame: .zero)
         label.font = Dimensions.message.font
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -117,19 +152,37 @@ enum Dimensions: CGFloat {
             } else {
                 topDescriptionLabel.isHidden = true
             }
-            
         }
     }
-    
 
     @IBInspectable var bottomDescription: String? {
         didSet {
             if let description = bottomDescription {
                 bottomDescriptionLabel.text = description
+                
+                if let htmlData = description.data(using: .utf8) {
+                    if let attributedString = try? NSAttributedString(
+                        data: htmlData,
+                        options: [.documentType: NSAttributedString.DocumentType.html,
+                                  .characterEncoding: String.Encoding.utf8.rawValue],
+                        documentAttributes: nil) {
+
+                        let paragraph = NSMutableParagraphStyle()
+                        paragraph.alignment = .center
+
+                        let formatted = NSMutableAttributedString(attributedString: attributedString)
+                        formatted.addAttributes([
+                            NSAttributedString.Key.font: Dimensions.description.font,
+                            NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel,
+                            NSAttributedString.Key.paragraphStyle: paragraph
+                        ], range: NSRange.init(location: 0, length: attributedString.length))
+
+                        bottomDescriptionLabel.attributedText = formatted
+                    }
+                }
             } else {
                 bottomDescriptionLabel.isHidden = true
             }
-            
         }
     }
     
@@ -140,7 +193,23 @@ enum Dimensions: CGFloat {
             } else {
                 promoMessageLabel.isHidden = true
             }
+        }
+    }
+    
+    var items: [(title: String, urlString: String)]? {
+        didSet {
+            guard let contentItems = items else { return }
             
+            for cview in contentStack.arrangedSubviews {
+                contentStack.removeArrangedSubview(cview)
+            }
+            
+            for item in contentItems {
+                let contentButton = ContentButton()
+                contentButton.setTitle(item.title, for: .normal)
+                contentButton.urlString = item.urlString
+                contentStack.addArrangedSubview(contentButton)
+            }
         }
     }
 }
