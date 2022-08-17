@@ -43,6 +43,6 @@ extension ANFExploreCardTableViewController: CategoryExplorerDelegate {
     }
     
     func didFail(error: RequestError) {
-        
+        showAlertView("Communication Error", message: "Try Again later!")
     }
 }
