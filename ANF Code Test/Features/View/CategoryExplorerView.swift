@@ -84,10 +84,8 @@ enum Dimensions: CGFloat {
     
     fileprivate var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
         imageView.sizeToFit()
-        imageView.backgroundColor = .yellow
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -138,9 +136,14 @@ enum Dimensions: CGFloat {
             guard let url = imageUrl else { return }
             let img = UIImage(named: url)
             if img != nil {
+                
                 backgroundImageView.image = img
             } else {
                 backgroundImageView.loadFrom(URLAddress: url)
+                let ratio = backgroundImageView.image!.size.width / backgroundImageView.image!.size.height
+                let newHeight = 300 / ratio // Instead of 300 calculate on display, also need to calculate what is greater width or height that will give you the hability to "switch"
+                let heightConstraint = NSLayoutConstraint(item: backgroundImageView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: newHeight)
+                backgroundImageView.addConstraint(heightConstraint)
             }
         }
     }
