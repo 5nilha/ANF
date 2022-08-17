@@ -12,10 +12,14 @@ class ANFExploreCardTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        categoryExplorerHelper.fetchCategoriesFromNetwork(delegate: self)
         // Set automatic dimensions for row height
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = UITableView.automaticDimension
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        categoryExplorerHelper.fetchCategoriesFromNetwork(delegate: self)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
