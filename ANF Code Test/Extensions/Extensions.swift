@@ -177,3 +177,56 @@ extension UIImage {
         return UIImage.cache.insertImage(self, for: url)
     }
 }
+
+extension UIViewController {
+    
+    private (set) var alert: UIAlertController? {
+        get {
+            guard let value = objc_getAssociatedObject(self, Unmanaged.passUnretained(self).toOpaque()) as? UIAlertController else { return nil }
+            return value
+        } set(newValue) {
+            objc_setAssociatedObject(self, Unmanaged.passUnretained(self).toOpaque(), newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    @discardableResult
+    func showAlertView(_ title: String? = "nil",
+                       message: String? = nil,
+                       actionTitle: String? = "OK",
+                       secondaryActionTitle: String? = nil,
+                       completion: ((Bool) -> Void)? = nil) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: actionTitle, preferredStyle: .alert)
+        
+        if let secActionTitle = secondaryActionTitle {
+            alertController.addAction(UIAlertAction(title: secActionTitle, style: alertActionStyle(secActionTitle), handler: { action in
+                self.alert = nil
+                completion?(true)
+            }))
+        }
+        
+        if let actnTitle = actionTitle {
+            let action = UIAlertAction(title: actnTitle, style: .default) { _ in
+                self.alert = nil
+                completion?(false)
+            }
+            alertController.addAction(action)
+            alertController.preferredAction = action
+        }
+        
+        let showAlert = {
+            self.alert = alertController
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        if let existingAlert = self.alert {
+            existingAlert.dismiss(animated: false, completion: showAlert)
+        }
+        showAlert()
+        return self.alert ?? alertController
+    }
+    
+    private func alertActionStyle(_ actionTitle: String) -> UIAlertAction.Style {
+        return (actionTitle.contains("Cancel") || actionTitle.contains("No") || actionTitle.contains("Try")) ? .cancel : .default
+    }
+}
+
