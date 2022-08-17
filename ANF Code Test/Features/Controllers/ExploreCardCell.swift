@@ -17,6 +17,11 @@ class ExploreCardCell: UITableViewCell {
         categoryView?.resetView()
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        categoryView?.resetView()
+    }
+    
     func setupView(categoryExplorerVM: CategoryExplorerViewModel) {
         categoryView?.title = categoryExplorerVM.title
         categoryView?.imageUrl = categoryExplorerVM.backgroundImageUrl
