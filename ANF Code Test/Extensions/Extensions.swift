@@ -145,7 +145,6 @@ extension UICollectionView {
 
 extension UIImageView {
     
-    
     func loadFrom(URLAddress: String) {
         DispatchQueue.global(qos: .background).async { [weak self] in
             if let image = UIImage.loadFromCache(string: URLAddress) {

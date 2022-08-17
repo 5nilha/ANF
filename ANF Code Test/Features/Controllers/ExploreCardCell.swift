@@ -14,12 +14,7 @@ class ExploreCardCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        categoryView?.resetView()
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        categoryView?.resetView()
+        categoryView = nil
     }
     
     func setupView(categoryExplorerVM: CategoryExplorerViewModel) {
