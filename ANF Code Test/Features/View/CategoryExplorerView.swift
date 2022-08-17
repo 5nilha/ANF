@@ -28,8 +28,8 @@ enum Dimensions: CGFloat {
     private var contentStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-//        stack.distribution = .fill
-//        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.alignment = .fill
         stack.spacing = 6
         return stack
     }()
@@ -37,8 +37,8 @@ enum Dimensions: CGFloat {
     private var vStack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-//        stack.distribution = .fill
-//        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.alignment = .fill
         stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
