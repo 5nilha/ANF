@@ -59,10 +59,6 @@ enum Dimensions: CGFloat {
     }
     
     private func commonInit(){
-        for sview in vStack.arrangedSubviews {
-            vStack.removeArrangedSubview(sview)
-        }
-        
         vStack.addArrangedSubview(backgroundImageView)
         vStack.addArrangedSubview(topDescriptionLabel)
         vStack.addArrangedSubview(titleLabel)
@@ -142,7 +138,7 @@ enum Dimensions: CGFloat {
             guard let url = imageUrl else { return }
             let img = UIImage(named: url)
             if img != nil {
-                backgroundImageView.image = image
+                backgroundImageView.image = img
             } else {
                 backgroundImageView.loadFrom(URLAddress: url)
             }
@@ -157,19 +153,16 @@ enum Dimensions: CGFloat {
     
     @IBInspectable var topDescription: String? {
         didSet {
-            if let description = topDescription {
-                topDescriptionLabel.text = description
-            } else {
-                topDescriptionLabel.isHidden = true
-            }
+            topDescriptionLabel.text = topDescription
+            topDescriptionLabel.isHidden = topDescription == nil
         }
     }
 
     @IBInspectable var bottomDescription: String? {
         didSet {
+            bottomDescriptionLabel.text = bottomDescription
+            bottomDescriptionLabel.isHidden = bottomDescription == nil
             if let description = bottomDescription {
-                bottomDescriptionLabel.text = description
-                
                 if let htmlData = description.data(using: .utf8) {
                     if let attributedString = try? NSAttributedString(
                         data: htmlData,
@@ -190,24 +183,21 @@ enum Dimensions: CGFloat {
                         bottomDescriptionLabel.attributedText = formatted
                     }
                 }
-            } else {
-                bottomDescriptionLabel.isHidden = true
             }
         }
     }
     
     @IBInspectable var promoMessage: String? {
         didSet {
-            if let message = promoMessage {
-                promoMessageLabel.text = message
-            } else {
-                promoMessageLabel.isHidden = true
-            }
+            promoMessageLabel.text = promoMessage
+            promoMessageLabel.isHidden = promoMessage == nil
         }
     }
     
     var items: [(title: String, urlString: String)]? {
+        
         didSet {
+            contentStack.isHidden = items == nil
             for cview in contentStack.arrangedSubviews {
                 contentStack.removeArrangedSubview(cview)
             }
@@ -224,6 +214,7 @@ enum Dimensions: CGFloat {
     }
     
     func resetView() {
-        items = nil
+        contentStack.arrangedSubviews.forEach{contentStack.removeArrangedSubview($0)}
+        vStack.removeArrangedSubview(contentStack)
     }
 }

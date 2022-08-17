@@ -147,21 +147,25 @@ extension UIImageView {
     
     
     func loadFrom(URLAddress: String) {
-        if let image = UIImage.loadFromCache(string: URLAddress) {
-            self.image = image
-            return
-        }
-
-        if let url = URL(string: URLAddress),
-           let imageData = try? Data(contentsOf: url) {
-            if let loadedImage = UIImage(data: imageData) {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            if let image = UIImage.loadFromCache(string: URLAddress) {
                 DispatchQueue.main.async { [weak self] in
-                    self?.image = loadedImage
-                    self?.image?.saveOnCache(url: url)
+                    self?.image = image
+                    return
                 }
             }
-                
+
+            if let url = URL(string: URLAddress),
+               let imageData = try? Data(contentsOf: url) {
+                if let loadedImage = UIImage(data: imageData) {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.image = loadedImage
+                        self?.image?.saveOnCache(url: url)
+                    }
+                }
+            }
         }
+        
     }
 }
 
